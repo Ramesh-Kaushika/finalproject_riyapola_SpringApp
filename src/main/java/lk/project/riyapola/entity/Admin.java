@@ -25,4 +25,7 @@ public class Admin {
     private String password;
 
 
+    public Admin(String email, String password) {
+
+    }
 }

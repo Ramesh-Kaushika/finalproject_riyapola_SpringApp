@@ -6,7 +6,9 @@ import lk.project.riyapola.repo.AdminRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AdminService {
@@ -18,11 +20,11 @@ public class AdminService {
         this.adminRepo = adminRepo;
     }
 
-    public Admin saveAdmin(AdminDto adminDto){
+    public Admin registerAdmin(AdminDto adminDto){
          return adminRepo.save(new Admin(adminDto.getUserName(),adminDto.getEmail(),adminDto.getPassword()));
     }
-    public List<Admin> getAllCustomers(){
-        return adminRepo.findAll();
+    public Admin loginAdmin(String email, String password){
+       return adminRepo.findUserByEmailAndPassword(email,password);
     }
   //  public void deleteCustomer(){}
    // public void updateCustomer(){}
