@@ -2,30 +2,82 @@ package lk.project.riyapola.service;
 
 import lk.project.riyapola.dto.AdminDto;
 import lk.project.riyapola.entity.Admin;
+import lk.project.riyapola.entity.Customer;
 import lk.project.riyapola.repo.AdminRepo;
+import lk.project.riyapola.util.JwtTokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class AdminService {
 
     private final AdminRepo adminRepo;
+    private final JwtTokenGenerator jwtTokenGenerator;
 
      @Autowired
-    public AdminService(AdminRepo adminRepo) {
+    public AdminService(AdminRepo adminRepo, JwtTokenGenerator jwtTokenGenerator) {
         this.adminRepo = adminRepo;
-    }
+         this.jwtTokenGenerator = jwtTokenGenerator;
+     }
 
     public Admin registerAdmin(AdminDto adminDto){
-         return adminRepo.save(new Admin(adminDto.getUserName(),adminDto.getEmail(),adminDto.getPassword()));
+
+        String originalInput = adminDto.getPassword();
+        String encodedString = Base64.getEncoder().encodeToString(originalInput.getBytes());
+         return adminRepo.save(new Admin(adminDto.getUserName(),adminDto.getEmail(),encodedString));
     }
-    public Admin loginAdmin(String email, String password){
-       return adminRepo.findUserByEmailAndPassword(email,password);
+    public Map<String,String> loginAdmin(AdminDto adminDto){
+            HashMap<String,String> response = new HashMap<>();
+
+
+        String originalInput = adminDto.getPassword();
+        String encodedString = Base64.getEncoder().encodeToString(originalInput.getBytes());
+
+        byte[] decodedBytes = Base64.getDecoder().decode(encodedString);
+        String decodedString = new String(decodedBytes);
+
+        Admin userByEmailAndPassword = adminRepo.findUserByEmailAndPassword(adminDto.getEmail(),decodedString);
+
+        if (userByEmailAndPassword != null) {
+            String token = this.jwtTokenGenerator.generateJwtToken(userByEmailAndPassword);
+            response.put("token", token);
+        } else {
+            response.put("massage", "wrong Credentials");
+        }
+        return response;
+
     }
-  //  public void deleteCustomer(){}
-   // public void updateCustomer(){}
+    public List<Admin> getAllAdmin(){
+         return adminRepo.findAll();
+    }
+    public Admin updateAdmin(Integer id,AdminDto adminDto){
+         if (adminRepo.existsById(id)){
+             return adminRepo.save(new Admin(id,adminDto.getUserName(),adminDto.getEmail(),adminDto.getPassword()));
+         }
+         return null;
+    }
+
+    public String deleteAdmin(Integer id){
+
+         if (adminRepo.existsById(id)){
+             adminRepo.deleteById(id);
+             return "Admin Deleted";
+         }
+         return "No Customer Found";
+    }
+
+    public Admin searchAdmin(Integer id){
+        Optional<Admin> byId = adminRepo.findById(id);
+        return byId.orElse(null);
+    }
+
+
+    public Admin searchAdminName(String userName){
+        return adminRepo.findAdminByUserName(userName);
+    }
+
+
+
 }

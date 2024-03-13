@@ -20,10 +20,10 @@ public class JwtTokenGenerator {
     @Value("${acpt.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
-    public String generateJwtToken(Admin adminDto) {
+    public String generateJwtToken(Admin admin) {
         return Jwts.builder()
-                .setId(String.valueOf(adminDto.getId()))
-                .setSubject((adminDto.getEmail()))
+                .setId(String.valueOf(admin.getId()))
+                .setSubject((admin.getEmail()))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(key(), SignatureAlgorithm.HS256)

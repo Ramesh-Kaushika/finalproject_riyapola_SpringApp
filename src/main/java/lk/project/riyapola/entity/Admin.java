@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
+import java.util.Base64;
+
 @NoArgsConstructor
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -23,6 +25,9 @@ public class Admin {
     private String email;
     @NonNull
     private String password;
+
+
+
 
 
     public Admin(String email, String password) {
