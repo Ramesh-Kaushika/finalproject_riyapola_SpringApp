@@ -38,33 +38,33 @@ public class AdminController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Admin>> getAllAdmins() {
-        List<Admin> allAdmin = adminService.getAllAdmin();
+    public ResponseEntity<List<Object>> getAllAdmins(@RequestHeader(name = "Authorization") String authorizationHeader) {
+        List<Object> allAdmin = adminService.getAllAdmin(authorizationHeader);
         return new ResponseEntity<>(allAdmin, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Admin> updateAdmin(@PathVariable Integer id, @RequestBody AdminDto adminDto) {
-        Admin admin = adminService.updateAdmin(id, adminDto);
+    public ResponseEntity<Object> updateAdmin(@RequestHeader(name = "Authorization") String authorizationHeader, @PathVariable Integer id, @RequestBody AdminDto adminDto) {
+        Object admin = adminService.updateAdmin(id, adminDto, authorizationHeader);
         return new ResponseEntity<>(admin, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteAdmin(@PathVariable Integer id) {
-        String deleted = adminService.deleteAdmin(id);
+    public ResponseEntity<String> deleteAdmin(@RequestHeader(name = "Authorization") String authorizationHeader,@PathVariable Integer id) {
+        String deleted = adminService.deleteAdmin(id,authorizationHeader);
         return new ResponseEntity<>(deleted,HttpStatus.CREATED);
 
     }
 
     @GetMapping("/search_admin/{id}")
-    public ResponseEntity<Object> searchAdmin(@PathVariable Integer id){
-        Object admin = adminService.searchAdmin(id);
+    public ResponseEntity<Object> searchAdmin(@RequestHeader(name = "Authorization") String authorizationHeader,@PathVariable Integer id){
+        Object admin = adminService.searchAdmin(id, authorizationHeader);
         return new ResponseEntity<>(admin,HttpStatus.OK);
     }
 
     @GetMapping("/search_admin_name/{userName}")
-    public ResponseEntity<Object>searchAdminName(@PathVariable String userName){
-        Object admin = adminService.searchAdminName(userName);
+    public ResponseEntity<List<Object>>searchAdminName(@RequestHeader(name = "Authorization") String authorizationHeader,@PathVariable String userName){
+        List<Object> admin = adminService.searchAdminName(userName,authorizationHeader);
         return new ResponseEntity<>(admin,HttpStatus.OK);
 
     }

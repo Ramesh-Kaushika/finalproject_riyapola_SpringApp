@@ -1,4 +1,5 @@
 package lk.project.riyapola.service;
+
 import lk.project.riyapola.dto.AdminDto;
 import lk.project.riyapola.entity.Admin;
 import lk.project.riyapola.repo.AdminRepo;
@@ -14,30 +15,31 @@ public class AdminService {
     private final AdminRepo adminRepo;
     private final JwtTokenGenerator jwtTokenGenerator;
 
-     @Autowired
+
+    @Autowired
     public AdminService(AdminRepo adminRepo, JwtTokenGenerator jwtTokenGenerator) {
         this.adminRepo = adminRepo;
-         this.jwtTokenGenerator = jwtTokenGenerator;
-     }
-
-    public Admin registerAdmin(AdminDto adminDto){
-
-        String originalInput = adminDto.getPassword();
-        String encodedString = Base64.getEncoder().encodeToString(originalInput.getBytes());
-         return adminRepo.save(new Admin(adminDto.getUserName(),adminDto.getEmail(),encodedString));
+        this.jwtTokenGenerator = jwtTokenGenerator;
     }
-    public Map<String,String> loginAdmin(AdminDto adminDto){
-            HashMap<String,String> response = new HashMap<>();
+
+    public Admin registerAdmin(AdminDto adminDto) {
+
+        String originalInput = adminDto.getPassword();
+        String encodedString = Base64.getEncoder().encodeToString(originalInput.getBytes());
+        return adminRepo.save(new Admin(adminDto.getUserName(), adminDto.getEmail(), encodedString));
+    }
+
+    public Map<String, String> loginAdmin(AdminDto adminDto) {
+        HashMap<String, String> response = new HashMap<>();
 
 
         String originalInput = adminDto.getPassword();
         String encodedString = Base64.getEncoder().encodeToString(originalInput.getBytes());
 
-//        byte[] decodedBytes = Base64.getDecoder().decode(encodedString);
-//        String decodedString = new String(decodedBytes);
 
 
-        Admin userByEmailAndPassword = adminRepo.findUserByEmailAndPassword(adminDto.getEmail(),encodedString);
+
+        Admin userByEmailAndPassword = adminRepo.findUserByEmailAndPassword(adminDto.getEmail(), encodedString);
 
         if (userByEmailAndPassword != null) {
             String token = this.jwtTokenGenerator.generateJwtToken(userByEmailAndPassword);
@@ -48,40 +50,62 @@ public class AdminService {
         return response;
 
     }
-    public List<Admin> getAllAdmin(){
-         return adminRepo.findAll();
-    }
-    public Admin updateAdmin(Integer id,AdminDto adminDto){
-         if (adminRepo.existsById(id)){
-             return adminRepo.save(new Admin(id,adminDto.getUserName(),adminDto.getEmail(),adminDto.getPassword()));
-         }
-         return null;
-    }
 
-    public String deleteAdmin(Integer id){
-
-         if (adminRepo.existsById(id)){
-             adminRepo.deleteById(id);
-             return "Admin Deleted";
-         }
-         return "No Customer Found";
-    }
-
-    public Object searchAdmin(Integer id) {
-        if(adminRepo.existsById(id)){
-            Admin admin = adminRepo.findById(id).get();
-
-            return admin;
+    public List<Object> getAllAdmin(String authorizationHeader) {
+        if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
+            return Collections.singletonList(adminRepo.findAll());
         }
+        return Collections.singletonList("Invalid Token");
 
-        return  "ID Not Found";
-    }
-
-        public Object searchAdminName(String userName){
-            return adminRepo.findAdminByUserName(userName);
 
     }
 
+    public Object updateAdmin(Integer id, AdminDto adminDto, String authorizationHeader) {
+        if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
+
+            if (adminRepo.existsById(id)) {
+                return adminRepo.save(new Admin(id, adminDto.getUserName(), adminDto.getEmail(), adminDto.getPassword()));
+            }
+            return "Invalid ID";
+        }
+        return "Invalid Token";
+    }
+
+    public String deleteAdmin(Integer id, String authorizationHeader) {
+        if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
+            if (adminRepo.existsById(id)) {
+                adminRepo.deleteById(id);
+                return "Admin Deleted";
+            }
+            return "No Customer Found";
+        }
+        return "Invalid Token";
+    }
+
+    public Object searchAdmin(Integer id, String authorizationHeader) {
+            if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)){
+                if (adminRepo.existsById(id)) {
+                    Admin admin = adminRepo.findById(id).get();
+
+                    return admin;
+                }
+
+                return "ID Not Found";
+            }
+            return "Invalid Token";
+
+
+
+    }
+
+    public List<Object> searchAdminName(String userName, String authorizationHeader) {
+        if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)){
+            return Collections.singletonList(adminRepo.findAdminByUserName(userName));
+        }
+        return Collections.singletonList("Invalid Token");
+
+
+    }
 
 
 }
