@@ -22,4 +22,8 @@ public class Maintenance {
     private String model;
     private String description;
     private double price;
+
+    public Maintenance(Integer vehicleNo, String brand, String model, String description, double price) {
+
+    }
 }
