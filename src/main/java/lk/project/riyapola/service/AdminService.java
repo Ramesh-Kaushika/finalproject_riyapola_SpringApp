@@ -1,8 +1,6 @@
 package lk.project.riyapola.service;
-
 import lk.project.riyapola.dto.AdminDto;
 import lk.project.riyapola.entity.Admin;
-import lk.project.riyapola.entity.Customer;
 import lk.project.riyapola.repo.AdminRepo;
 import lk.project.riyapola.util.JwtTokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +33,11 @@ public class AdminService {
         String originalInput = adminDto.getPassword();
         String encodedString = Base64.getEncoder().encodeToString(originalInput.getBytes());
 
-        byte[] decodedBytes = Base64.getDecoder().decode(encodedString);
-        String decodedString = new String(decodedBytes);
+//        byte[] decodedBytes = Base64.getDecoder().decode(encodedString);
+//        String decodedString = new String(decodedBytes);
 
-        Admin userByEmailAndPassword = adminRepo.findUserByEmailAndPassword(adminDto.getEmail(),decodedString);
+
+        Admin userByEmailAndPassword = adminRepo.findUserByEmailAndPassword(adminDto.getEmail(),encodedString);
 
         if (userByEmailAndPassword != null) {
             String token = this.jwtTokenGenerator.generateJwtToken(userByEmailAndPassword);
@@ -68,14 +67,19 @@ public class AdminService {
          return "No Customer Found";
     }
 
-    public Admin searchAdmin(Integer id){
-        Optional<Admin> byId = adminRepo.findById(id);
-        return byId.orElse(null);
+    public Object searchAdmin(Integer id) {
+        if(adminRepo.existsById(id)){
+            Admin admin = adminRepo.findById(id).get();
+
+            return admin;
+        }
+
+        return  "ID Not Found";
     }
 
+        public Object searchAdminName(String userName){
+            return adminRepo.findAdminByUserName(userName);
 
-    public Admin searchAdminName(String userName){
-        return adminRepo.findAdminByUserName(userName);
     }
 
 

@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @Data
 @Entity
-public class Vehicle {
+public class Maintenance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

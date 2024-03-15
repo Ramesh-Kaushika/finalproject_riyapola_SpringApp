@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -57,14 +57,14 @@ public class AdminController {
     }
 
     @GetMapping("/search_admin/{id}")
-    public ResponseEntity<Admin> searchAdmin(@PathVariable Integer id){
-        Admin admin = adminService.searchAdmin(id);
+    public ResponseEntity<Object> searchAdmin(@PathVariable Integer id){
+        Object admin = adminService.searchAdmin(id);
         return new ResponseEntity<>(admin,HttpStatus.OK);
     }
 
-    @GetMapping("/search_admin/{userName}")
-    public ResponseEntity<Admin>searchAdminName(@PathVariable String userName){
-        Admin admin = adminService.searchAdminName(userName);
+    @GetMapping("/search_admin_name/{userName}")
+    public ResponseEntity<Object>searchAdminName(@PathVariable String userName){
+        Object admin = adminService.searchAdminName(userName);
         return new ResponseEntity<>(admin,HttpStatus.OK);
 
     }
