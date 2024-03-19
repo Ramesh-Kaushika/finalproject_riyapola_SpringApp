@@ -15,6 +15,7 @@ public class MaintenanceDto {
     private String model;
     private String description;
     private double price;
+    private String vehicleImage;
 
 
 }

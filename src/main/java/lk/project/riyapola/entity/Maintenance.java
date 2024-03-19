@@ -23,8 +23,23 @@ public class Maintenance {
     private String model;
     private String description;
     private double price;
+    private String vehicleImage;
 
-    public Maintenance(Integer vehicleNo, String brand, String model, String description, double price) {
+    public Maintenance(Integer vehicleNo, String brand, String model, String description, double price, String vehicleImage) {
+        this.vehicleNo = vehicleNo;
+        this.brand = brand;
+        this.model = model;
+        this.description = description;
+        this.price = price;
+        this.vehicleImage = vehicleImage;
+    }
 
+    public Maintenance(Integer id, Integer vehicleNo, String brand, String model, String description, double price) {
+        this.id = id;
+        this.vehicleNo = vehicleNo;
+        this.brand = brand;
+        this.model = model;
+        this.description = description;
+        this.price = price;
     }
 }

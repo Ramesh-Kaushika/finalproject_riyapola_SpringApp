@@ -1,8 +1,5 @@
 package lk.project.riyapola.controller;
-
-import lk.project.riyapola.dto.AdminDto;
 import lk.project.riyapola.dto.CustomerDto;
-import lk.project.riyapola.entity.Admin;
 import lk.project.riyapola.entity.Customer;
 import lk.project.riyapola.service.CustomerService;
 import lk.project.riyapola.util.JwtTokenGenerator;

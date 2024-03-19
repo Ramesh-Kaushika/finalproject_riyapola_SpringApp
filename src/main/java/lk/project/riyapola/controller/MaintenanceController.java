@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:5173/")
@@ -26,9 +28,10 @@ public class MaintenanceController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> saveVehicle(@RequestHeader(name = "Authorization") String authorizationHeader, @RequestBody MaintenanceDto maintenanceDto) {
+    public ResponseEntity<Object> saveVehicle(@RequestHeader(name = "Authorization") String authorizationHeader, @ModelAttribute MaintenanceDto maintenanceDto,
+                                              @RequestParam("image")MultipartFile file) throws IOException {
         if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
-            Maintenance maintenance = maintenanceService.saveVehicle(maintenanceDto);
+            Maintenance maintenance = maintenanceService.saveVehicle(maintenanceDto, file);
             return new ResponseEntity<>(maintenance, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>("invalid Token", HttpStatus.FORBIDDEN);
