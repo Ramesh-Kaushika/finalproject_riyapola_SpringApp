@@ -1,6 +1,7 @@
 package lk.project.riyapola.util;
 
 import lk.project.riyapola.entity.Admin;
+import lk.project.riyapola.entity.Customer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +25,16 @@ public class JwtTokenGenerator {
         return Jwts.builder()
                 .setId(String.valueOf(admin.getId()))
                 .setSubject((admin.getEmail()))
+                .setIssuedAt(new Date())
+                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .signWith(key(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public String generateJwtTokenCustomer(Customer customer) {
+        return Jwts.builder()
+                .setId(String.valueOf(customer.getId()))
+                .setSubject((customer.getEmail()))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(key(), SignatureAlgorithm.HS256)
