@@ -20,11 +20,23 @@ public class Customer {
     private String firstName;
     private String lastName;
     private String password;
-    private String nic;
-    private String email;
     private Integer telephoneNo;
-    private String address;
-    private String date;
-    private String time;
+    private String email;
+
+    public Customer(String firstName, String lastName, String password, Integer telephoneNo, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.telephoneNo = telephoneNo;
+        this.email = email;
+        this.password = password;
+    }
+
+
+
+
+    //    private String date;
+//    private String address;
+//    private String nic;
+//    private String time;
 
 }
