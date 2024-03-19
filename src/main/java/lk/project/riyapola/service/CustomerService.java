@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -59,4 +60,24 @@ public class CustomerService {
             }
         }
     }
+
+    public List<Customer> getAllCustomer() {
+        return customerRepo.findAll();
+    }
+
+    public Object updateCustomer(Integer id, CustomerDto customerDto) {
+        if (customerRepo.existsById(id)) {
+            return customerRepo.save(new Customer(id, customerDto.getFirstName(), customerDto.getLastName(), customerDto.getPassword(), customerDto.getTelephoneNo(), customerDto.getEmail()));
+        }
+        return "Invalid ID";
+    }
+
+    public String deleteCustomer(Integer id) {
+        if (customerRepo.existsById(id)) {
+            customerRepo.deleteById(id);
+            return "Customer Deleted";
+        }
+        return "No Customer Found";
+    }
+
 }
