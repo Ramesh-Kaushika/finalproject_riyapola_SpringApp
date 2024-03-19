@@ -6,10 +6,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
-import java.util.Base64;
+
 
 @NoArgsConstructor
-@RequiredArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity
@@ -19,20 +18,30 @@ public class Admin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NonNull
+
     private String userName;
-    @NonNull
+
     private String email;
-    @NonNull
+
     private String password;
 
 
 
-
-
-    public Admin(String email, String password) {
-
+    public Admin(String userName, String email, String password) {
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
     }
+
+
+
+
+    public Admin(Integer id, String userName, String email) {
+        this.userName = userName;
+        this.email = email;
+        this.id=id;
+    }
+
 
 
 }
