@@ -1,5 +1,6 @@
 package lk.project.riyapola.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,4 +15,6 @@ public class MaintenanceDto {
     private String model;
     private String description;
     private double price;
+
+
 }
