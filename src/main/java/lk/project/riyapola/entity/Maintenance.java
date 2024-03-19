@@ -42,4 +42,12 @@ public class Maintenance {
         this.description = description;
         this.price = price;
     }
+
+    public Maintenance(Integer vehicleNo, String brand, String model, String description, double price) {
+        this.vehicleNo = vehicleNo;
+        this.brand = brand;
+        this.model = model;
+        this.description = description;
+        this.price = price;
+    }
 }

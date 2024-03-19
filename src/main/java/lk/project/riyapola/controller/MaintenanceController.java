@@ -28,14 +28,15 @@ public class MaintenanceController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> saveVehicle(@RequestHeader(name = "Authorization") String authorizationHeader, @ModelAttribute MaintenanceDto maintenanceDto,
-                                              @RequestParam("image")MultipartFile file) throws IOException {
-        if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
+    public ResponseEntity<Object> saveVehicle( @ModelAttribute MaintenanceDto maintenanceDto,
+                                              @RequestParam("image") MultipartFile file) throws IOException {
+        System.out.println("mona huyata");
+      //  if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
             Maintenance maintenance = maintenanceService.saveVehicle(maintenanceDto, file);
             return new ResponseEntity<>(maintenance, HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>("invalid Token", HttpStatus.FORBIDDEN);
-        }
+//        } else {
+//            return new ResponseEntity<>("invalid Token", HttpStatus.FORBIDDEN);
+//        }
 
     }
 

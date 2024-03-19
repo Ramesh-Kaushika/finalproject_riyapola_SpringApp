@@ -16,6 +16,4 @@ public class MaintenanceDto {
     private String description;
     private double price;
     private String vehicleImage;
-
-
 }

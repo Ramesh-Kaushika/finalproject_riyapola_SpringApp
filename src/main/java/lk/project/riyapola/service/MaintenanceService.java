@@ -28,7 +28,7 @@ public class MaintenanceService {
         String originalFilename = file.getOriginalFilename();
         Path path = Paths.get(uploadDirectory, originalFilename);
         Files.write(path, file.getBytes());
-        return maintenanceRepo.save(new Maintenance(maintenanceDto.getVehicleNo(), maintenanceDto.getBrand(), maintenanceDto.getModel(), maintenanceDto.getDescription(), maintenanceDto.getPrice(), originalFilename));
+        return maintenanceRepo.save(new Maintenance(maintenanceDto.getVehicleNo(), maintenanceDto.getBrand(), maintenanceDto.getModel(), maintenanceDto.getDescription(), maintenanceDto.getPrice(),originalFilename));
     }
 
     public List<Maintenance> getAllVehicle() {
