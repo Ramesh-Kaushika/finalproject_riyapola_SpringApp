@@ -19,11 +19,11 @@ public class Customer {
     private Integer id;
     private String firstName;
     private String lastName;
-    private String password;
-    private Integer telephoneNo;
     private String email;
+    private Integer telephoneNo;
+    private String password;
 
-    public Customer(String firstName, String lastName, String password, Integer telephoneNo, String email) {
+    public Customer(String firstName, String lastName,String email, Integer telephoneNo, String password ) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.telephoneNo = telephoneNo;

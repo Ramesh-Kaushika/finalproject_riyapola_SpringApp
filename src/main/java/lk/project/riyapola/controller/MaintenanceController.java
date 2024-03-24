@@ -5,6 +5,7 @@ import lk.project.riyapola.entity.Maintenance;
 import lk.project.riyapola.service.MaintenanceService;
 import lk.project.riyapola.util.JwtTokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,15 +29,15 @@ public class MaintenanceController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> saveVehicle( @ModelAttribute MaintenanceDto maintenanceDto,
+    public ResponseEntity<Object> saveVehicle(@RequestHeader(name = "Authorization") String authorizationHeader, @ModelAttribute MaintenanceDto maintenanceDto,
                                               @RequestParam("image") MultipartFile file) throws IOException {
-        System.out.println("mona huyata");
-      //  if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
+
+        if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
             Maintenance maintenance = maintenanceService.saveVehicle(maintenanceDto, file);
             return new ResponseEntity<>(maintenance, HttpStatus.CREATED);
-//        } else {
-//            return new ResponseEntity<>("invalid Token", HttpStatus.FORBIDDEN);
-//        }
+      } else {
+           return new ResponseEntity<>("invalid Token", HttpStatus.FORBIDDEN);
+       }
 
     }
 
@@ -44,6 +45,7 @@ public class MaintenanceController {
     public ResponseEntity<Object> getAllVehicle(@RequestHeader(name = "Authorization") String authorizationHeader) {
         if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
             List<Maintenance> allVehicle = maintenanceService.getAllVehicle();
+
             return new ResponseEntity<>(allVehicle, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("invalid Token", HttpStatus.FORBIDDEN);

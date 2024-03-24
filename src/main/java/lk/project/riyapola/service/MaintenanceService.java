@@ -32,6 +32,7 @@ public class MaintenanceService {
     }
 
     public List<Maintenance> getAllVehicle() {
+
         return maintenanceRepo.findAll();
     }
 

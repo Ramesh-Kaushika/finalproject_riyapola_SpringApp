@@ -26,13 +26,13 @@ public class CustomerController {
         this.jwtTokenGenerator = jwtTokenGenerator;
     }
 
-    @PostMapping("/register/customer")
+    @PostMapping("/register")
     public ResponseEntity<Object> registerCustomer(@RequestBody CustomerDto customerDto) {
         Object ad = customerService.registerCustomer(customerDto);
         return new ResponseEntity<>(ad, HttpStatus.CREATED);
     }
 
-    @PostMapping("/login/customer")
+    @PostMapping("/login")
     public ResponseEntity<Map<String, String>> loginCustomer(@RequestBody CustomerDto customerDto) {
         return customerService.loginCustomer(customerDto);
     }
@@ -46,7 +46,7 @@ public class CustomerController {
             return new ResponseEntity<>("invalid Token", HttpStatus.FORBIDDEN);
         }
     }
-    @PutMapping("/customer/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Object> updateCustomer(@RequestHeader(name = "Authorization") String authorizationHeader, @PathVariable Integer id, @RequestBody CustomerDto customerDto) {
         if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
             Object customer = customerService.updateCustomer(id, customerDto);
@@ -56,7 +56,7 @@ public class CustomerController {
         }
     }
 
-    @DeleteMapping("/customer/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCustomer(@RequestHeader(name = "Authorization") String authorizationHeader, @PathVariable Integer id) {
         if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
             String deleted = customerService.deleteCustomer(id);

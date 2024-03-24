@@ -67,7 +67,7 @@ public class CustomerService {
 
     public Object updateCustomer(Integer id, CustomerDto customerDto) {
         if (customerRepo.existsById(id)) {
-            return customerRepo.save(new Customer(id, customerDto.getFirstName(), customerDto.getLastName(), customerDto.getPassword(), customerDto.getTelephoneNo(), customerDto.getEmail()));
+            return customerRepo.save(new Customer(id, customerDto.getFirstName(), customerDto.getLastName(), customerDto.getEmail(), customerDto.getTelephoneNo() ,customerDto.getPassword()));
         }
         return "Invalid ID";
     }
