@@ -1,5 +1,6 @@
 package lk.project.riyapola.controller;
 
+import lk.project.riyapola.dto.ImageDetailsGetDto;
 import lk.project.riyapola.dto.MaintenanceDto;
 import lk.project.riyapola.entity.Maintenance;
 import lk.project.riyapola.service.MaintenanceService;
@@ -12,9 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:5173/")
+@CrossOrigin
 @RestController
 @RequestMapping("/vehicle")
 public class MaintenanceController {
@@ -29,12 +31,11 @@ public class MaintenanceController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> saveVehicle(@RequestHeader(name = "Authorization") String authorizationHeader, @ModelAttribute MaintenanceDto maintenanceDto,
-                                              @RequestParam("image") MultipartFile file) throws IOException {
+    public ResponseEntity<Object> saveVehicle(@RequestHeader(name = "Authorization") String authorizationHeader, @ModelAttribute MaintenanceDto maintenanceDto) throws IOException, URISyntaxException {
 
         if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
-            Maintenance maintenance = maintenanceService.saveVehicle(maintenanceDto, file);
-            return new ResponseEntity<>(maintenance, HttpStatus.CREATED);
+            ImageDetailsGetDto imageDetailsGetDto = maintenanceService.saveVehicle(maintenanceDto);
+            return new ResponseEntity<>(imageDetailsGetDto, HttpStatus.CREATED);
       } else {
            return new ResponseEntity<>("invalid Token", HttpStatus.FORBIDDEN);
        }
@@ -42,14 +43,14 @@ public class MaintenanceController {
     }
 
     @GetMapping
-    public ResponseEntity<Object> getAllVehicle(@RequestHeader(name = "Authorization") String authorizationHeader) {
-        if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
+    public ResponseEntity<Object> getAllVehicle() {
+       // if (this.jwtTokenGenerator.validateJwtToken(authorizationHeader)) {
             List<Maintenance> allVehicle = maintenanceService.getAllVehicle();
 
             return new ResponseEntity<>(allVehicle, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("invalid Token", HttpStatus.FORBIDDEN);
-        }
+        //} else {
+          //  return new ResponseEntity<>("invalid Token", HttpStatus.FORBIDDEN);
+       // }
     }
 
     @PutMapping("/{id}")
